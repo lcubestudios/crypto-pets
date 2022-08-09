@@ -109,17 +109,43 @@ const registerPet = () => {
 
         <h3 className="text-xl font bold">Type of Pet</h3>
 
-        <input type="checkbox" name="dog" value="Dog" />
-        <label for="dog">Dog</label>
-        <input type="checkbox" name="cat" value="Cat" />
-        <label for="cat">Cat</label>
-        <input type="checkbox" name="other" value="Other" />
-        <label for="other">Other</label>
+        <select className="mt-8 border rounded p-4" name="type" >;
+
+          {typeOfPet.map((type) => (
+            <option key={type.name} value={type.name}>
+              {type.name}
+            </option>
+
+          ))}
+        </select>
+
+
+        <h3 className="text-xl font bold">Breed</h3>
+
+
+        <select className="mt-8 border rounded p-4" name="breed" >;
+          {typeOfPet.map((type) => (
+            type.breeds.map((breed) => (
+              <option key={breed} value={breed}>
+                {breed}
+              </option>
+            ))
+          ))}
+
+
+        </select>
+
+
+
+
+
+
+
 
         {/* Breed - have 4 options for dog and 3 options for cats and none for other */}
 
         {/* Image */}
-        <input type="file" name="Asset" className="my-4" onChange={onChange} />
+        < input type="file" name="Asset" className="my-4" onChange={onChange} />
         {fileUrl && (
           <img src={fileUrl} width="350px" className="rounded mt-4 mx-auto" />
         )}

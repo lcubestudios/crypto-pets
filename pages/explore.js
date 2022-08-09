@@ -3,7 +3,7 @@ import React from 'react'
 const explore = () => {
   return (
     <div>
-        <h2>Explore</h2>
+        <h2></h2>
     </div>
   )
 }

@@ -14,7 +14,24 @@ const registerPet = () => {
     type: "",
     breed: "",
     description: "",
+    isLost: false,
+    isAvailableForAdoption: false,
   });
+
+  const typeOfPet = [
+    {
+      name: "dog",
+      breeds: ["Pug", "Shiba Inu", "St. Bernard", "Lab"],
+    },
+    {
+      name: "cat",
+      breeds: ["type1", "type2", "type3"],
+    },
+    {
+      name: "other",
+      breeds: [],
+    },
+  ];
 
   const router = useRouter();
 
@@ -33,14 +50,16 @@ const registerPet = () => {
   };
 
   const uploadToIPFS = async () => {
-    const { name, age, description } = formInput;
+    const { name, age, description, type, breed } = formInput;
 
-    if (!name || !description || !age || !fileUrl) return;
+    if (!name || !description || !age || !type || !breed || !fileUrl) return;
 
     // upload metadata to IPFS first
     const data = JSON.stringify({
       name,
       age,
+      type,
+      breed,
       description,
       image: fileUrl,
     });
@@ -55,6 +74,7 @@ const registerPet = () => {
   };
 
   const register = async () => {
+    const { isLost, isAvailableForAdoption } = formInput;
     const url = await uploadToIPFS();
 
     const web3modal = new Web3Modal();
@@ -63,8 +83,10 @@ const registerPet = () => {
     const signer = provider.getSigner();
 
     let contract = new ethers.Contract(contractAddress, abi, signer);
-    let create_tx = contract.createPet()
+    let create_tx = contract.createPet(url, isLost, isAvailableForAdoption);
     await create_tx.wait();
+
+    router.push("/");
   };
 
   return (
@@ -82,7 +104,18 @@ const registerPet = () => {
           placeholder="Age"
           className="mt-8 border rounded p-4"
         />
+
         {/* Checkbox for Type of pet */}
+
+        <h3 className="text-xl font bold">Type of Pet</h3>
+
+        <input type="checkbox" name="dog" value="Dog" />
+        <label for="dog">Dog</label>
+        <input type="checkbox" name="cat" value="Cat" />
+        <label for="cat">Cat</label>
+        <input type="checkbox" name="other" value="Other" />
+        <label for="other">Other</label>
+
         {/* Breed - have 4 options for dog and 3 options for cats and none for other */}
 
         {/* Image */}
@@ -102,7 +135,9 @@ const registerPet = () => {
         ></textarea>
 
         {/* Register button */}
-        <button onClick={register}>Register Pet</button>
+        <button className="py-4 my-4 text-white bg-blue-500" onClick={register}>
+          Register Pet
+        </button>
       </div>
     </div>
   );

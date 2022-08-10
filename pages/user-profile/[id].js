@@ -1,25 +1,28 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-
+import axios from "axios";
 import PersonCard from "../../components/personCard";
 import PetCard from "../../components/petCard";
 import UiButton from "../../components/ui/button";
+import { getUserProfile } from "../../utils/Helpers";
 
 const Dashboard = () => {
+  const router = useRouter();
   const [viewType, setViewType] = useState("grid");
   const [petList, setPetList] = useState([]);
+  const [myProfile, setMyProfile] = useState({});
 
   const moralisapi = "https://deep-index.moralis.io/api/v2/";
   const moralisapikey =
     "TxztwObdgsXQueV2GFtawRatLvDKSqbcxRT0N7baKBGTQnecHW3VsNUCNCC8gqqH";
   const nftContract = "0xf839db645e008816b141e9c9649b939ed8c5fb48";
-  const getMyPets = async (account) => {
+  const getMyPets = async (id) => {
     const config = { "X-API-Key": moralisapikey, accept: "application/json" };
     const nfts = await axios
       .get(
-        moralisapi +
-          `${account}/nft/${nftContract}?chain=rinkeby&format=decimal`,
+        moralisapi + `${id}/nft/${nftContract}?chain=rinkeby&format=decimal`,
         { headers: config }
       )
       .then((output) => {
@@ -29,7 +32,6 @@ const Dashboard = () => {
       });
     const petList = await Promise.all(
       nfts.map(async (i) => {
-        console.log(i);
         const itemMetadata = JSON.parse(i.metadata);
         let item = {
           tokenId: i.token_id,
@@ -37,7 +39,6 @@ const Dashboard = () => {
           owner: i.owner_of,
           metadata: itemMetadata,
         };
-        console.log(item);
         return item;
       })
     );
@@ -45,15 +46,25 @@ const Dashboard = () => {
     setPetList(petList);
   };
 
+  const getMyProfile = (id) => {
+    return async () => {
+      const profileData = await getUserProfile(id);
+      setMyProfile(profileData.metadata);
+      console.log(myProfile);
+    };
+  };
+
   useEffect(() => {
-    getMyPets("0xaba9F36672bd87E8C04068B69BA211bDfc542bB6");
-  }, []);
+    if (!router.isReady) return;
+    getMyProfile(router.query?.id);
+    getMyPets(router.query?.id);
+  }, [router.isReady]);
 
   return (
     <div className="flex flex-col gap-8">
       <section>
         <PersonCard
-          name="Person Name"
+          name={myProfile.email}
           email="user@email.com"
           phone_number="000 000 0000"
           country="Country of Residence"
@@ -100,15 +111,19 @@ const Dashboard = () => {
       </header>
       <section>
         <div className="grid grid-cols-12 gap-x-4 lg:gap-x-8  gap-y-8">
-          {petList.map((item) => {
+          {petList.map((item, index) => {
             return (
               // eslint-disable-next-line react/jsx-key
-              <div className={`col-span-${viewType === "list" ? "12" : "4"}`}>
+              <div
+                key={index}
+                className={`col-span-${viewType === "list" ? "12" : "4"}`}
+              >
                 <PetCard
                   name={item.metadata.name}
                   age={item.metadata.age}
                   breed={item.metadata.breed}
                   imgSrc={item.metadata.image}
+                  href={"/pet-profile/" + item.tokenId}
                 />
               </div>
             );

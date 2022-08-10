@@ -2,13 +2,18 @@ import "../styles/globals.css";
 import Link from "next/link";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
+import React, {useState, } from "react";
 
 function MyApp({ Component, pageProps }) {
+
+  const [currentAccount, setCurrentAccount] = useState();
+
 
 
   return (
 
     <div>
+      <button></button>
       <nav className="flex flex-col items-center">
         <Link href="/">
           <h1 className="text-5xl font-bold pt-8 pb-4 hover:cursor-pointer">

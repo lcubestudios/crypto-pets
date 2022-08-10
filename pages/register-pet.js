@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
@@ -46,7 +46,6 @@ const registerPet = () => {
         progress: (prog) => console.log(`receiving ... ${prog}`),
       });
       const url = `https://ipfs.infura.io/ipfs/${addedFile.path}`;
-      console.log(url);
       setFileUrl(url);
     } catch (error) {
       console.log(error);
@@ -56,7 +55,10 @@ const registerPet = () => {
   const uploadToIPFS = async () => {
     const { name, age, description, type, breed } = formInput;
 
-    if (!name || !description || !age || !type || !breed || !fileUrl) return;
+    if (!name || !description || !age || !type || !breed || !fileUrl) {
+      console.log("Missing a field");
+      return;
+    }
 
     // upload metadata to IPFS first
     const data = JSON.stringify({
@@ -67,6 +69,8 @@ const registerPet = () => {
       description,
       image: fileUrl,
     });
+
+    console.log(data);
 
     try {
       const addedFile = await client.add(data);
@@ -80,7 +84,6 @@ const registerPet = () => {
   const register = async () => {
     const { isLost, isAvailableForAdoption } = formInput;
     const url = await uploadToIPFS();
-
     const web3modal = new Web3Modal();
     const connection = await web3modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
@@ -91,14 +94,19 @@ const registerPet = () => {
       CryptoPets.abi,
       signer
     );
-    let create_tx = await contract.createPet(url, isLost, isAvailableForAdoption);
+    let create_tx = await contract.createPet(
+      url,
+      isLost,
+      isAvailableForAdoption
+    );
     await create_tx.wait();
 
-    router.push("/");
+    router.push("/my-pets");
   };
 
   const onSelectType = (e) => {
     console.log(e.target.value);
+    setFormInput({ ...formInput, type: e.target.value });
     console.log(
       typeOfPet.filter((pet) => pet.name === e.target.value)[0].breeds
     );
@@ -117,12 +125,14 @@ const registerPet = () => {
           name="name"
           placeholder="Name"
           className="mt-8 border rounded p-4"
+          onChange={(e) => setFormInput({ ...formInput, name: e.target.value })}
         />
         <input
           type="number"
           name="age"
           placeholder="Age"
           className="mt-8 border rounded p-4"
+          onChange={(e) => setFormInput({ ...formInput, age: e.target.value })}
         />
 
         {/* Checkbox for Type of pet */}
@@ -147,7 +157,13 @@ const registerPet = () => {
 
         <h3 className="text-xl font bold">Breed</h3>
 
-        <select className="mt-8 border rounded p-4" name="breed">
+        <select
+          className="mt-8 border rounded p-4"
+          name="breed"
+          onChange={(e) =>
+            setFormInput({ ...formInput, breed: e.target.value })
+          }
+        >
           ;
           {breedList.map((breed) => (
             <option key={breed} value={breed}>

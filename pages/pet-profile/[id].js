@@ -18,7 +18,7 @@ const PetProfile = () => {
   const moralisapi = "https://deep-index.moralis.io/api/v2/";
   const moralisapikey =
     "TxztwObdgsXQueV2GFtawRatLvDKSqbcxRT0N7baKBGTQnecHW3VsNUCNCC8gqqH";
-  const nftContract = "0xf839db645e008816b141e9c9649b939ed8c5fb48";
+  const nftContract = "0xA25e072299C2fd31D136bE0F3E1Fd6F36Fc3B490s";
   const getPetProfile = async (id) => {
     const config = { "X-API-Key": moralisapikey, accept: "application/json" };
     const nft = await axios

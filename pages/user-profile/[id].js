@@ -17,7 +17,7 @@ const Dashboard = () => {
   const moralisapi = "https://deep-index.moralis.io/api/v2/";
   const moralisapikey =
     "TxztwObdgsXQueV2GFtawRatLvDKSqbcxRT0N7baKBGTQnecHW3VsNUCNCC8gqqH";
-  const nftContract = "0xf839db645e008816b141e9c9649b939ed8c5fb48";
+  const nftContract = "0xA25e072299C2fd31D136bE0F3E1Fd6F36Fc3B490";
   const getMyPets = async (id) => {
     const config = { "X-API-Key": moralisapikey, accept: "application/json" };
     const nfts = await axios
@@ -63,14 +63,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <PersonCard
-          name={myProfile.email}
-          email="user@email.com"
-          phone_number="000 000 0000"
-          country="Country of Residence"
-          ens="ens-name.eth"
-          public_address="Public Addess"
-        />
+        <PersonCard public_address={router.query?.id} />
       </section>
       <header className="flex flex-row justify-between">
         <div className="flex felx-row items-center gap-4">

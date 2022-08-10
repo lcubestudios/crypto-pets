@@ -9,18 +9,64 @@ const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
 
 const RegisterPet = () => {
   const CONTRACT_ADDRESS = "0xf839db645E008816B141E9C9649b939Ed8C5FB48";
+  const [breedList, setBreedList] = useState([]);
+  const [fileUrl, setFileUrl] = useState(null);
+  const [formInput, setFormInput] = useState({
+    name: "",
+    age: "",
+    type: "",
+    breed: "",
+    description: "",
+    isLost: false,
+    isAvailableForAdoption: false,
+  });
 
-  const registerPet = () => {
-    const [breedList, setBreedList] = useState([]);
-    const [fileUrl, setFileUrl] = useState(null);
-    const [formInput, setFormInput] = useState({
-      name: "",
-      age: "",
-      type: "",
-      breed: "",
-      description: "",
-      isLost: false,
-      isAvailableForAdoption: false,
+  const typeOfPet = [
+    {
+      name: "dog",
+      breeds: ["Pug", "Shiba Inu", "St. Bernard", "Lab"],
+    },
+    {
+      name: "cat",
+      breeds: ["type1", "type2", "type3"],
+    },
+    {
+      name: "other",
+      breeds: [],
+    },
+  ];
+
+  const router = useRouter();
+
+  const onChange = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const addedFile = await client.add(file, {
+        progress: (prog) => console.log(`receiving ... ${prog}`),
+      });
+      const url = `https://ipfs.infura.io/ipfs/${addedFile.path}`;
+      setFileUrl(url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const uploadToIPFS = async () => {
+    const { name, age, description, type, breed } = formInput;
+
+    if (!name || !description || !age || !type || !breed || !fileUrl) {
+      console.log("Missing a field");
+      return;
+    }
+
+    // upload metadata to IPFS first
+    const data = JSON.stringify({
+      name,
+      age,
+      type,
+      breed,
+      description,
+      image: fileUrl,
     });
 
     const typeOfPet = [

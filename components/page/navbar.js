@@ -3,7 +3,8 @@ import React from 'react'
 import Link from "next/link"
 import Image from "next/image"
 
-const footer = () => {
+const Navbar = () => {
+	const publicAddress = 'my-public-address'
   return (
 		<nav className="flex flex-row justify-around md:justify-end">
 			<div className="mx-4 cursor-pointer">
@@ -17,7 +18,7 @@ const footer = () => {
 				</Link>
 			</div>
 			<div className="mx-4 cursor-pointer">
-				<Link href="/dashboard">
+				<Link href={`/user-profile/{publicAddress}`}>
 					<Image 
 						src="/icon-dashboard.png"
 						alt="dashboard"
@@ -39,4 +40,4 @@ const footer = () => {
   )
 }
 
-export default footer;
+export default Navbar;

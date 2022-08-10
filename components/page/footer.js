@@ -2,7 +2,7 @@ import React from 'react'
 
 import PageNavbar from "./navbar"
 
-const footer = () => {
+const Footer = () => {
   return (
 		<footer className="md:hidden bg-toolbar flex flex-row justify-center">
 			<div className="container p-4">
@@ -14,4 +14,4 @@ const footer = () => {
   )
 }
 
-export default footer;
+export default Footer;

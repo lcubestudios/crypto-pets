@@ -3,23 +3,30 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { calcTimeDiff } from '../utils/Helpers'
+
 const PetCard = ({
-	href = '#',
+	href = '/pet-profile/test',
 	imgSrc,
 	name,
-	age,
+	dob,
 	breed
 }) => {
+	const dob_date = new Date(dob)
+
+	const age = calcTimeDiff(new Date(), new Date(dob))
+
+	console.log(age)
+
   return (
 		<Link href={href}>
-			<div className="flex flex-col gap-2 md:gap-4">
-				<div className="square-image rounded-lg">
-					<Image
-						src={imgSrc}
-						alt={name}
-						width="100%"
-						height="100%"
-						layout="responsive"
+			<div className="flex flex-col gap-2 md:gap-4 clip-text">
+				<div className="square-tile rounded-lg">
+					<div 
+						className="cover-image w-full h-full" 
+						style={{
+							backgroundImage: `url('${ imgSrc }')`
+						}}
 					/>
 				</div>
 				<div className="flex flex-col gap-0 md:gap-2">

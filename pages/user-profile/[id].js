@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-
 import Link from "next/link";
 import Image from "next/image";
-import axios from "axios";
-import PersonCard from "../components/personCard";
-import PetCard from "../components/petCard";
-import UiButton from "../components/ui/button";
+
+import PersonCard from "../../components/personCard";
+import PetCard from "../../components/petCard";
+import UiButton from "../../components/ui/button";
 
 const Dashboard = () => {
   const [viewType, setViewType] = useState("grid");
@@ -29,7 +28,8 @@ const Dashboard = () => {
         return result;
       });
     const petList = await Promise.all(
-      nfts.map(async (i) => { console.log(i)
+      nfts.map(async (i) => {
+        console.log(i);
         const itemMetadata = JSON.parse(i.metadata);
         let item = {
           tokenId: i.token_id,
@@ -44,7 +44,6 @@ const Dashboard = () => {
 
     setPetList(petList);
   };
-
 
   useEffect(() => {
     getMyPets("0xaba9F36672bd87E8C04068B69BA211bDfc542bB6");

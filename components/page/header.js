@@ -5,7 +5,7 @@ import Image from "next/image"
 
 import PageNavbar from "./navbar"
 
-const header = () => {
+const Header = () => {
   return (
 		<header className="flex flex-row justify-center md:bg-white">
 			<div className="container p-4">
@@ -24,4 +24,4 @@ const header = () => {
   )
 }
 
-export default header;
+export default Header;

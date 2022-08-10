@@ -3,9 +3,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import PersonCard from '../components/personCard'
-import PetCard from '../components/petCard'
-import UiButton from '../components/ui/button'
+import PersonCard from '../../components/personCard'
+import PetCard from '../../components/petCard'
+import UiButton from '../../components/ui/button'
 
 const Dashboard = () => {
 	const [viewType, setViewType] = useState('grid');

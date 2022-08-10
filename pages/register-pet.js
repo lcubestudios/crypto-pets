@@ -6,7 +6,7 @@ import { create } from "ipfs-http-client";
 
 const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
 
-const registerPet = () => {
+const RegisterPet = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({
     name: "",
@@ -69,7 +69,7 @@ const registerPet = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-1/2 flex flex-col pb-12">
+      <div className="w-full flex flex-col pb-12">
         <input
           type="text"
           name="name"
@@ -108,4 +108,4 @@ const registerPet = () => {
   );
 };
 
-export default registerPet;
+export default RegisterPet;

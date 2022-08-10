@@ -1,0 +1,61 @@
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html {
+	font-family: var(--font-family);
+}
+
+html, body { 
+	width: 100vw;
+	height: 100vh;
+	font-size: var(--standard-font-size); 
+	line-height: 1.25; 
+	overscroll-behavior: none; 
+}
+
+/* Typography */
+h1 { font-size: var(--h1-font-size); line-height: var(--h1-line-height); }
+h2 { font-size: var(--h2-font-size); line-height: var(--h2-line-height); }
+h3 { font-size: var(--h3-font-size); line-height: var(--h3-line-height); }
+h4 { font-size: var(--h4-font-size); line-height: var(--h4-line-height); }
+h5 { font-size: var(--h5-font-size); line-height: var(--h5-line-height); }
+h6 { font-size: var(--h6-font-size); line-height: var(--h6-line-height); }
+
+p { font-size: var(--body-font-size); line-height: var(--body-line-height); }
+small { font-size: 0.875em; line-height: 1.7; }
+span, label, 
+a, button { font-size: 1em; line-height: 1.25; }
+
+h1, h2, small { font-weight: 500; }
+h3, h4, h5, h6, 
+p, span, label, 
+a, button { font-weight: inherit; }
+strong { font-weight: 500; }
+
+a, button { cursor: pointer; }
+
+/* Article */
+article > div,
+article > p { margin-bottom: 1em; }
+
+input:focus,
+textarea:focus,
+select:focus { outline:none; }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

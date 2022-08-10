@@ -1,0 +1,83 @@
+:root {
+	/* Colors*/
+	--color-black: #1A1818;
+	--color-white:  #FFFFFF;
+	--color-primary: #80A6F2;
+	--color-primary-dark: #3D79F2;
+	--color-primary-darker: #3D6AF2;
+	--color-primary-darkest: #1D52F2;
+	--color-secondary: #EFEAEA;
+
+	/* Typography */
+	--font-family: 'Nunito', 'Helvitica', Arial, sans-serif;
+	--jumbo-font-size: 3rem;
+	--jumbo-line-height: 1.25;
+	--h1-font-size: 2.75rem;
+	--h1-line-height: 1.25;
+	--h2-font-size: 2.5rem;
+	--h2-line-height: 1.25;
+	--h3-font-size: 2.15rem;
+	--h3-line-height: 1.25;
+	--h4-font-size: 1.75rem;
+	--h4-line-height: 1.25;
+	--h5-font-size: 1.5rem;
+	--h5-line-height: 1.25;
+	--h6-font-size: 1.33rem;
+	--h6-line-height: 1.25;
+	--body-font-size: 1rem;
+	--body-line-height: 1.25;
+	--standard-font-size: 12px;
+	--standard-line-height: 18px;
+	--small-font-size: 14px;
+	--small-line-height: 16px;
+	--tiny-font-size: 12px;
+	--tiny-line-height: 14px;
+
+	/* Theme */
+	--bg-color: var(--color-secondary);
+	--text-color: var(--color-black);
+	--toolbar-color: var(--color-white);
+	--toolbar-height: 50px;
+	--framework-grid-rows: var(--toolbar-height) auto var(--toolbar-height);
+}
+
+
+@media (min-width: 521px) {
+	:root {
+		/* Typography */
+		/* Theme */
+	}
+}
+
+/* tablets */
+@media (min-width: 769px) {
+	:root {
+		/* Typography */
+		/* Theme */
+	--framework-grid-rows: var(--toolbar-height) auto;
+	}
+}
+
+/* desktops */
+@media (min-width: 1025px) {
+	:root {
+		/* Typography */
+		/* Theme */
+	}
+}
+
+/* large monitors */
+@media (min-width: 1281px) {
+	:root {
+		/* Typography */
+		/* Theme */
+	}
+}
+
+/* extra large monitors */
+@media (min-width: 1441px) {
+	:root {
+		/* Typography */
+		/* Theme */
+	}
+}

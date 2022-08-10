@@ -3,10 +3,14 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
 import { create } from "ipfs-http-client";
+import CryptoPets from "../utils/CryptoPets.json";
 
 const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
 
+const CONTRACT_ADDRESS = "0xf839db645E008816B141E9C9649b939Ed8C5FB48";
+
 const registerPet = () => {
+  const [breedList, setBreedList] = useState([]);
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({
     name: "",
@@ -82,11 +86,27 @@ const registerPet = () => {
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
 
-    let contract = new ethers.Contract(contractAddress, abi, signer);
-    let create_tx = contract.createPet(url, isLost, isAvailableForAdoption);
+    let contract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      CryptoPets.abi,
+      signer
+    );
+    let create_tx = await contract.createPet(url, isLost, isAvailableForAdoption);
     await create_tx.wait();
 
     router.push("/");
+  };
+
+  const onSelectType = (e) => {
+    console.log(e.target.value);
+    console.log(
+      typeOfPet.filter((pet) => pet.name === e.target.value)[0].breeds
+    );
+    const newList = e.target?.value
+      ? typeOfPet.filter((pet) => pet.name === e.target.value)[0].breeds
+      : [];
+
+    setBreedList(newList);
   };
 
   return (
@@ -109,43 +129,37 @@ const registerPet = () => {
 
         <h3 className="text-xl font bold">Type of Pet</h3>
 
-        <select className="mt-8 border rounded p-4" name="type" >;
-
+        <select
+          className="mt-8 border rounded p-4"
+          name="type"
+          onChange={onSelectType}
+        >
+          <option selected disabled>
+            Please select a type
+          </option>
+          ;
           {typeOfPet.map((type) => (
             <option key={type.name} value={type.name}>
               {type.name}
             </option>
-
           ))}
         </select>
-
 
         <h3 className="text-xl font bold">Breed</h3>
 
-
-        <select className="mt-8 border rounded p-4" name="breed" >;
-          {typeOfPet.map((type) => (
-            type.breeds.map((breed) => (
-              <option key={breed} value={breed}>
-                {breed}
-              </option>
-            ))
+        <select className="mt-8 border rounded p-4" name="breed">
+          ;
+          {breedList.map((breed) => (
+            <option key={breed} value={breed}>
+              {breed}
+            </option>
           ))}
-
-
         </select>
-
-
-
-
-
-
-
 
         {/* Breed - have 4 options for dog and 3 options for cats and none for other */}
 
         {/* Image */}
-        < input type="file" name="Asset" className="my-4" onChange={onChange} />
+        <input type="file" name="Asset" className="my-4" onChange={onChange} />
         {fileUrl && (
           <img src={fileUrl} width="350px" className="rounded mt-4 mx-auto" />
         )}

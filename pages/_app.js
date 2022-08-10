@@ -1,12 +1,19 @@
 import "../styles/globals.css";
 import Link from "next/link";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
 
 function MyApp({ Component, pageProps }) {
+
+
   return (
+
     <div>
       <nav className="flex flex-col items-center">
         <Link href="/">
-          <h1 className="text-5xl font-bold pt-8 pb-4 hover:cursor-pointer">Crypto Pets</h1>
+          <h1 className="text-5xl font-bold pt-8 pb-4 hover:cursor-pointer">
+            Crypto Pets
+          </h1>
         </Link>
 
         <p className="italic">Your pet on the blockchain!</p>

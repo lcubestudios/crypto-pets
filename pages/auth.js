@@ -4,33 +4,16 @@ import axios from "axios";
 import Image from "next/image";
 
 import UiButton from "../components/ui/button";
-import { getUserProfile } from "../utils/Helpers";
+import {
+  getUserProfile,
+  checkIfWalletIsConnected,
+  checkUser,
+} from "../utils/Helpers";
+import { useRouter } from "next/router";
 
 const Auth = () => {
+  const router = useRouter();
   const [currentAccount, setCurrentAccount] = useState();
-
-  const checkIfWalletIsConnected = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        console.log("Please install MetaMask! 🦊");
-        return;
-      } else {
-        console.log("Got the Ethereum object", ethereum);
-      }
-
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Found an authorized account:", account);
-        checkUser(account);
-      } else {
-        console.log("No authorized account found...");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const connectWallet = async () => {
     try {
@@ -51,16 +34,10 @@ const Auth = () => {
     }
   };
 
-  const checkUser = async (public_address) => {
-    const hasProfile = await getUserProfile(public_address);
-
-    if (hasProfile) window.location = "/user-profile/" + public_address;
-    else window.location = "/register-user";
-  };
-
   useEffect(() => {
-    checkIfWalletIsConnected();
-  }, []);
+    if (!router.isReady) return;
+    checkIfWalletIsConnected(router);
+  }, [router.isReady]);
 
   return (
     <div className="flex flex-col items-center gap-8 pt-56">

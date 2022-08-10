@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import PetCard from "../components/petCard";
 import UiButton from "../components/ui/button";
+import { checkIfWalletIsConnected } from "../utils/Helpers";
 
 const moralisapi = "https://deep-index.moralis.io/api/v2/";
 const moralisapikey =
@@ -50,6 +51,7 @@ const Explore = () => {
 
   useEffect(() => {
     return () => {
+      checkIfWalletIsConnected(router);
       getPetList();
     };
   }, []);

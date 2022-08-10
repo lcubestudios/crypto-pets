@@ -4,6 +4,16 @@ import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
 import { create } from "ipfs-http-client";
 import CryptoPets from "../utils/CryptoPets.json";
+import { checkIfWalletIsConnected } from "../utils/Helpers";
+/* const projectId = "2D8tIooHzCA81NDx2AlHllSAtZg";
+const projectSecret = "f373e87ace06f794c97f3af6d10ece67";
+const auth = projectId + ":" + projectSecret;
+const client = create({
+  url: "https://ipfs.infura.io:5001",
+  headers: {
+    authorization: auth,
+  },
+}); */
 
 const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
 
@@ -46,7 +56,9 @@ const RegisterPet = () => {
         progress: (prog) => console.log(`receiving ... ${prog}`),
       });
       const url = `https://ipfs.infura.io/ipfs/${addedFile.path}`;
+      console.log("before", url);
       setFileUrl(url);
+      console.log("url", url);
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +94,7 @@ const RegisterPet = () => {
   };
 
   const register = async () => {
+    console.log("register");
     const { isLost, isAvailableForAdoption } = formInput;
     const url = await uploadToIPFS();
     const web3modal = new Web3Modal();
@@ -101,31 +114,7 @@ const RegisterPet = () => {
     );
     await create_tx.wait();
 
-    console.log(currentAddress);
     router.push("/user-profile/" + currentAddress);
-  };
-
-  const checkIfWalletIsConnected = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        console.log("Please install MetaMask! 🦊");
-        return;
-      } else {
-        console.log("Got the Ethereum object", ethereum);
-      }
-
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Found an authorized account:", account);
-		setCurrentAddress(account);
-      } else {
-        console.log("No authorized account found...");
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const onSelectType = (e) => {
@@ -142,9 +131,9 @@ const RegisterPet = () => {
   };
 
   useEffect(() => {
-    checkIfWalletIsConnected();
-  }, [])
-  
+    if (!router.isReady) return;
+    checkIfWalletIsConnected(router);
+  }, [router.isReady]);
 
   return (
     <div className="flex flex-col items-center">

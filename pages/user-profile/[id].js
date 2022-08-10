@@ -6,7 +6,7 @@ import axios from "axios";
 import PersonCard from "../../components/personCard";
 import PetCard from "../../components/petCard";
 import UiButton from "../../components/ui/button";
-import { getUserProfile } from "../../utils/Helpers";
+import { getUserProfile, checkIfWalletIsConnected } from "../../utils/Helpers";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -56,6 +56,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
+    checkIfWalletIsConnected(router);
     getMyProfile(router.query?.id);
     getMyPets(router.query?.id);
   }, [router.isReady]);

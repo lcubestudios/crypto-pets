@@ -1,33 +1,13 @@
 import React, { useState, useEffect } from "react";
 import UiButton from "../components/ui/button";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
+import { checkIfWalletIsConnected } from "../utils/Helpers";
 
 const RegisterUser = () => {
+  const router = useRouter();
   const [currentAccount, setCurrentAccount] = useState();
-
-  const checkIfWalletIsConnected = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        console.log("Please install MetaMask! 🦊");
-        return;
-      } else {
-        console.log("Got the Ethereum object", ethereum);
-      }
-
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Found an authorized account:", account);
-        setCurrentAccount(account);
-      } else {
-        console.log("No authorized account found...");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const serializeForm = (form) => {
     const obj = {};
@@ -73,8 +53,9 @@ const RegisterUser = () => {
   };
 
   useEffect(() => {
-    checkIfWalletIsConnected();
-  }, []);
+    if (!router.isReady) return;
+    checkIfWalletIsConnected(router);
+  }, [router.isReady]);
 
   return (
     <div className="flex flex-col items-center gap-8 pt-56">

@@ -29,3 +29,41 @@ export async function getUserProfile(public_address) {
       return data;
     });
 }
+
+export async function checkUser(public_address) {
+  const hasProfile = await getUserProfile(public_address);
+
+  if (hasProfile) window.location = "/user-profile/" + public_address;
+  else window.location = "/register-user";
+}
+
+export async function checkIfWalletIsConnected(router) {
+  try {
+    const { ethereum } = window;
+    if (!ethereum) {
+      console.log("Please install MetaMask! 🦊");
+      return;
+    } else {
+      console.log("Got the Ethereum object", ethereum);
+    }
+
+    const accounts = await ethereum.request({ method: "eth_accounts" });
+
+    if (router.pathname === "/auth") {
+      if (accounts.length !== 0) {
+        const account = accounts[0];
+        console.log("Found an authorized account:", account);
+        checkUser(account);
+      } else {
+        console.log("No authorized account found...");
+      }
+    } else {
+      if (accounts.length === 0) {
+        window.location = "/auth";
+        console.log("No authorized account found...");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
+import { checkIfWalletIsConnected } from "../../utils/Helpers";
 
 const PetProfile = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const PetProfile = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
+    checkIfWalletIsConnected(router);
     getPetProfile(router.query?.id);
   }, [router.isReady]);
 

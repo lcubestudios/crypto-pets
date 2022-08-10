@@ -13,13 +13,12 @@ const PetProfile = () => {
   useEffect(() => {
     if (!router.isReady) return;
     getPetProfile(router.query?.id);
-	
   }, [router.isReady]);
 
   const moralisapi = "https://deep-index.moralis.io/api/v2/";
   const moralisapikey =
     "TxztwObdgsXQueV2GFtawRatLvDKSqbcxRT0N7baKBGTQnecHW3VsNUCNCC8gqqH";
-  const nftContract = "0xA25e072299C2fd31D136bE0F3E1Fd6F36Fc3B490s";
+  const nftContract = "0xA25e072299C2fd31D136bE0F3E1Fd6F36Fc3B490";
   const getPetProfile = async (id) => {
     const config = { "X-API-Key": moralisapikey, accept: "application/json" };
     const nft = await axios

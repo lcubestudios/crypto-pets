@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -6,50 +7,103 @@ import Image from 'next/image'
 import PetCard from '../components/petCard'
 import UiButton from '../components/ui/button'
 
+const moralisapi = "https://deep-index.moralis.io/api/v2/";
+const moralisapikey = "TxztwObdgsXQueV2GFtawRatLvDKSqbcxRT0N7baKBGTQnecHW3VsNUCNCC8gqqH";
+const nftContract = "0xf839db645e008816b141e9c9649b939ed8c5fb48";
+
 const Explore = () => {
-	const [viewType, setViewType] = useState('grid');
-	const petList = [1,2,3,4]
+	const [typeFilter, setTypeFilter] = useState(null)
+	const [breedFilter, setBreedFilter] = useState(null)
+	const [ageFilter, setAgeFilter] = useState(null)
+	const [statusFilter, setStatusFilter] = useState(null)
+	const [petList, setPetList] = useState([]);
+  const getPetList = async () => {
+    const config = { 'X-API-Key': moralisapikey, 'accept': 'application/json' }
+    const nfts = await axios.get((moralisapi + `/nft/${nftContract}?chain=rinkeby&format=decimal`), { headers: config })
+      .then(({ data }) => {
+        const { result } = data
+
+        return result;
+      })
+
+    const filterData = await Promise.all(nfts.map(async i => {
+			// API call to contract
+			// - pass token id in url
+      return {
+        tokenId: i.token_id,
+        tokenURI: i.token_uri,
+        owner: i.owner_of,
+        metadata: JSON.parse(i.metadata),
+      }
+    }))
+
+		console.log(filterData)
+
+    setPetList(filterData);
+  }
+
+	useEffect(() =>{
+		return () => {
+			getPetList()
+		}
+	}, [])
 
   return (
     <div className="flex flex-col gap-8">
 			<section className="flex flex-row justify-center items-center h-48">
 				<h1>Explore</h1>
 			</section>
-			<header className="flex flex-row justify-between">
-				<div className="flex felx-row items-center gap-4">
-					<h4>My Pets</h4>
-					{
-						viewType === 'list'
-						? <button onClick={() => {
-							setViewType('grid')
-						}}>
-								<Image src="/icon-grid-view.png" alt="Grid View" width="13" height="13"/>
-							</button>
-						: <button onClick={() => {
-							setViewType('list')
-						}}>
-								<Image src="/icon-list-view.png" alt="List View" width="13" height="13"/>
-							</button>
-					}
-				</div>
-				<div>
-					<Link href="/register-pet">
-						<UiButton label="Add a pet">Add a pet</UiButton>
-					</Link>
+			<header className="flex flex-col gap-4">
+				<h4>Filter</h4>
+				<div className="grid grid-cols-12 gap-4">
+					<div className="col-span-4">
+						<select name="filter_type">
+							<option selected disabled>Type</option>
+							<option value="all">ALL</option>
+						</select>
+					</div>
+					<div className="col-span-4">
+						<select name="filter_breed">
+							<option selected disabled>Breed</option>
+							<option value="all">ALL</option>
+						</select>
+					</div>
+					<div className="col-span-4">
+						<select name="filter_age">
+							<option selected disabled>Age</option>
+							<option value="all">ALL</option>
+						</select>
+					</div>
+					<div className="col-span-4">
+						<select name="filter_status">
+							<option selected disabled>Status</option>
+							<option value="all">ALL</option>
+						</select>
+					</div>
 				</div>
 			</header>
 			<section>
-				<div className="grid grid-cols-12 gap-x-4 lg:gap-x-8  gap-y-8">
+				<div className="grid grid-cols-12 gap-x-4 lg:gap-x-8 gap-y-8">
 					{
-						petList.map((item) => {
+						petList.map((item, index) => {
+							const { metadata } = item
+							const {
+								name,
+								dob,
+								breed,
+								image
+							} = metadata
 							return (
 								// eslint-disable-next-line react/jsx-key
-								<div className={`col-span-${ viewType === 'list' ? '12' : '4' }`}>
+								<div
+									key={index}
+									className="col-span-4"
+								>
 									<PetCard 
-										name="Pet Name" 
-										age="Age"
-										breed="Breed"
-										imgSrc="https://images.unsplash.com/photo-1517849845537-4d257902454a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035&h=1035&q=80"
+										name={name} 
+										dob={dob || 1249088895000}
+										breed={breed}
+										imgSrc={image}
 									/>
 								</div>
 							)

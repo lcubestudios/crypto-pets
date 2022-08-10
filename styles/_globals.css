@@ -3,9 +3,6 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 html {
@@ -58,4 +55,10 @@ select:focus { outline:none; }
 * {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+.clip-text * {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

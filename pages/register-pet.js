@@ -7,14 +7,9 @@ import CryptoPets from "../utils/CryptoPets.json";
 
 const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
 
-<<<<<<< HEAD
 const RegisterPet = () => {
-=======
-const CONTRACT_ADDRESS = "0xf839db645E008816B141E9C9649b939Ed8C5FB48";
-
-const registerPet = () => {
+	const CONTRACT_ADDRESS = "0xf839db645E008816B141E9C9649b939Ed8C5FB48";
   const [breedList, setBreedList] = useState([]);
->>>>>>> 64f3d8382e77a567426261ac7edf163c49098076
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({
     name: "",

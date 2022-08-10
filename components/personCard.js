@@ -13,7 +13,7 @@ const PersonCard = ({
 	const [isExpanded, setIsExpanded] = useState(false)
   return (
 		<div 
-			className="info-card bg-white rounded-lg p-8 md:p-10 lg:p-12 md:pointer-events-none"
+			className="info-card bg-white rounded-lg p-8 md:p-10 lg:p-12 md:pointer-events-none clip-text"
 			onClick={() => {
 				setIsExpanded(!isExpanded)
 			}}

@@ -16,7 +16,7 @@ const RegisterUser = () => {
 					layout="responsive"
 				/>
 			</div>
-			<UiButton label="Check User" onClick={checkUser} />
+			<UiButton label="Check User" />
     </div>
   )
 }

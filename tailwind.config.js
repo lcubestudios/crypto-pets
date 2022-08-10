@@ -50,7 +50,9 @@ module.exports = {
         }]
       },
 			width: {
+				'60px': '60px',
 				'100px': '100px',
+				'120px': '120px',
 				'200px': '200px',
 			},
 			height: {

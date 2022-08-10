@@ -13,6 +13,7 @@ const PetProfile = () => {
   useEffect(() => {
     if (!router.isReady) return;
     getPetProfile(router.query?.id);
+	
   }, [router.isReady]);
 
   const moralisapi = "https://deep-index.moralis.io/api/v2/";

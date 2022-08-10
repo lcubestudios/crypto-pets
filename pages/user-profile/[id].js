@@ -112,11 +112,11 @@ const Dashboard = () => {
                 className={`col-span-${viewType === "list" ? "12" : "4"}`}
               >
                 <PetCard
-                  name={item.metadata.name}
-                  age={item.metadata.age}
-                  breed={item.metadata.breed}
-                  imgSrc={item.metadata.image}
-                  href={"/pet-profile/" + item.tokenId}
+                  name={item?.metadata?.name}
+                  age={item?.metadata?.age}
+                  breed={item?.metadata?.breed}
+                  imgSrc={item?.metadata?.image}
+                  href={"/pet-profile/" + item?.tokenId}
                 />
               </div>
             );

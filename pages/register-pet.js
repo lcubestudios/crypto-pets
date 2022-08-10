@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
@@ -9,6 +9,7 @@ const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
 
 const RegisterPet = () => {
   const CONTRACT_ADDRESS = "0xA25e072299C2fd31D136bE0F3E1Fd6F36Fc3B490";
+  const [currentAddress, setCurrentAddress] = useState("");
   const [breedList, setBreedList] = useState([]);
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({
@@ -100,7 +101,31 @@ const RegisterPet = () => {
     );
     await create_tx.wait();
 
-    router.push("/my-pets");
+    console.log(currentAddress);
+    router.push("/user-profile/" + currentAddress);
+  };
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        console.log("Please install MetaMask! 🦊");
+        return;
+      } else {
+        console.log("Got the Ethereum object", ethereum);
+      }
+
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+      if (accounts.length !== 0) {
+        const account = accounts[0];
+        console.log("Found an authorized account:", account);
+		setCurrentAddress(account);
+      } else {
+        console.log("No authorized account found...");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSelectType = (e) => {
@@ -115,6 +140,11 @@ const RegisterPet = () => {
 
     setBreedList(newList);
   };
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, [])
+  
 
   return (
     <div className="flex flex-col items-center">
